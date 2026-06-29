@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Paliar Learn</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="card-home">
+
+        <h1>🎓 Paliar Learn</h1>
+
+        <h2>Seja bem-vindo(a)!</h2>
+        <p class="subtitulo-home">
+    Teste seus conhecimentos e acompanhe sua evolução.
+</p>
+
+        <div class="menu-home">
+
+            <button onclick="iniciarQuiz()">
+                Iniciar Quiz
+            </button>
+
+            <button onclick="verResultado()">
+                Ver Resultado
+            </button>
+
+            <button onclick="verHistorico()">
+                Ver Histórico
+            </button>
+
+            
+            <button onclick="areaAdmin()">
+    Área Administrativa
+</button>
+
+<button onclick="sair()">
+    Sair
+</button>
+
+        </div>
+        <p id="mensagem-acesso"></p>
+
+    </div>
+
+        <script>
+
+    function iniciarQuiz() {
+
+        window.location.href = "quiz.html";
+
+    }
+
+    function verResultado() {
+
+        window.location.href = "resultado.html";
+
+    }
+    function verHistorico() {
+
+    window.location.href = "historico.html";
+
+}
+function areaAdmin() {
+
+    const admin = localStorage.getItem("admin");
+
+    if (admin !== "true") {
+
+        const mensagem =
+    document.getElementById(
+        "mensagem-acesso"
+    );
+
+mensagem.style.display =
+    "block";
+
+mensagem.innerText =
+    "⚠️ Você não possui acesso a esta área.";
+
+return;
+    }
+
+    window.location.href = "admin.html";
+
+}
+function sair() {
+
+    localStorage.removeItem(
+        "usuario_id"
+    );
+
+    localStorage.removeItem(
+        "nome"
+    );
+
+    localStorage.removeItem(
+        "admin"
+    );
+
+    window.location.href =
+        "login.html";
+}
+
+
+</script>
+</body>
+</html>

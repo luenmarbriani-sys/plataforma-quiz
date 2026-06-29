@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Histórico</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Histórico</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+      <h1 class="titulo-historico">
+    Histórico de Tentativas
+</h1>
+
+  <div id="historico"></div>
+  <div class="menu-home">
+
+    <button onclick="voltarInicio()">
+        Voltar ao Início
+    </button>
+
+</div>
+
+    <script>
+
+    async function carregarHistorico() {
+
+        const resposta = await fetch(
+            "http://127.0.0.1:8000/resultados/usuario/1"
+        );
+
+        const dados = await resposta.json();
+
+        const divHistorico =
+            document.getElementById("historico");
+
+        divHistorico.innerHTML = "";
+
+        const maiorPercentual = Math.max(
+            ...dados.map(r => r.percentual)
+        );
+
+        for (let i = 0; i < dados.length; i++) {
+
+            const resultado = dados[i];
+
+            let destaque = "";
+
+            if (
+                resultado.percentual === maiorPercentual
+            ) {
+                destaque = " ⭐";
+            }
+
+            divHistorico.innerHTML += `
+
+            <div class="card-historico">
+
+                <h3>
+                    Tentativa ${i + 1}${destaque}
+                </h3>
+
+                <div class="percentual-historico">
+                    ${resultado.percentual}%
+                </div>
+
+            </div>
+
+            `;
+        }
+    }
+    
+    function voltarInicio() {
+
+        window.location.href = "home.html";
+    }
+
+       carregarHistorico();
+
+    </script>
+
+</body>
+</html>

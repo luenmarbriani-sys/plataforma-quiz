@@ -1,0 +1,23 @@
+# Ambiente virtual
+venv/
+
+# Cache do Python
+__pycache__/
+*.pyc
+
+# Arquivos de ambiente
+.env
+
+# Arquivos temporários
+*.log
+
+# Configurações do VS Code
+.vscode/
+
+# Arquivos do sistema
+.DS_Store
+Thumbs.db
+
+# Arquivos gerados pela aplicação
+auditoria.xlsx
+resultado_alunos.xlsx

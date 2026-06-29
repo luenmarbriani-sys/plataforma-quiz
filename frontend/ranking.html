@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ranking</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <h1>🏆 Ranking Geral</h1>
+
+<div id="ranking"></div>
+
+<div class="menu-home">
+
+    <button onclick="voltarInicio()">
+        🏠 Voltar ao Início
+    </button>
+
+    </div>
+
+<script>
+
+    async function carregarRanking() {
+
+        const resposta = await fetch(
+            "http://127.0.0.1:8000/ranking"
+        );
+
+        const dados = await resposta.json();
+
+        const divRanking =
+            document.getElementById("ranking");
+
+        divRanking.innerHTML = "";
+
+        let posicao = 1;
+
+        for (const aluno of dados) {
+
+            let medalha = "🏅";
+
+if (posicao === 1) {
+    medalha = "🥇";
+}
+else if (posicao === 2) {
+    medalha = "🥈";
+}
+else if (posicao === 3) {
+    medalha = "🥉";
+}
+
+divRanking.innerHTML += `
+
+    <div class="card-ranking">
+
+        <h3>
+            ${medalha} ${posicao}° Lugar    -   
+            ${aluno.nome}       -       
+            ${aluno.percentual}%
+        </p>
+
+    </div>
+
+`;
+
+            posicao++;
+        }
+
+    }
+
+    carregarRanking();
+
+    function voltarInicio() {
+
+    window.location.href = "home.html";
+
+}
+
+    </script>
+
+</body>
+</html>

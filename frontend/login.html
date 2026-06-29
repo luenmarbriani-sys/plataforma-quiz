@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Paliar Learn</title>
+</head>
+<body>
+
+    <body>
+
+    <div class="card-login">
+
+        <h1>🎓 Paliar Learn</h1>
+
+              <p class="subtitulo-login">
+            Faça seu login para iniciar o quiz.
+        </p>
+
+        <input
+            type="email"
+            id="email"
+            placeholder="Digite seu email"
+        >
+
+        <br><br>
+
+        <input
+            type="password"
+            id="senha"
+            placeholder="Digite sua senha"
+        >
+
+        <br><br>
+
+        <button onclick="entrar()">
+            Entrar
+        </button>
+
+    </div>
+
+    <script>
+
+        async function entrar() {
+
+    const email = document.getElementById("email").value;
+
+    const senha = document.getElementById("senha").value;
+
+    const resposta = await fetch(
+        "http://127.0.0.1:8000/login",
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                email: email,
+                senha: senha
+            })
+        }
+    );
+
+    const dados = await resposta.json();
+
+if (dados.mensagem === "Login realizado com sucesso") {
+
+    localStorage.setItem(
+        "usuario_id",
+        dados.usuario_id
+    );
+
+    localStorage.setItem(
+        "nome",
+        dados.nome
+    );
+
+    localStorage.setItem(
+        "admin",
+        dados.admin
+    );
+
+    window.location.href = "home.html";
+
+} else {
+
+    alert(dados.mensagem);
+}
+}
+</script>

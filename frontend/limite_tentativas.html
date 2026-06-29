@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Limite de Tentativas</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="card-limite">
+
+        <h1>
+            🔒 Limite de Tentativas Atingido
+        </h1>
+
+        <p>
+            Você já utilizou suas 3 tentativas.
+        </p>
+
+        <h2 id="melhor-resultado">
+            Melhor Resultado: 0%
+        </h2>
+
+        <button
+            class="btn-historico"
+            onclick="window.location.href='historico.html'"
+        >
+            Ver Histórico
+        </button>
+
+    </div>
+
+<script>
+
+async function carregarMelhorResultado() {
+
+    const resposta = await fetch(
+        "http://127.0.0.1:8000/resultados/usuario/1"
+    );
+
+    const dados = await resposta.json();
+
+    let melhorPercentual = 0;
+
+    for (const resultado of dados) {
+
+        if (
+            resultado.percentual > melhorPercentual
+        ) {
+
+            melhorPercentual =
+                resultado.percentual;
+        }
+    }
+
+    document.getElementById(
+        "melhor-resultado"
+    ).innerText =
+        "Melhor Resultado: " +
+        melhorPercentual +
+        "%";
+}
+
+carregarMelhorResultado();
+
+</script>
+
+</body>
+</html>

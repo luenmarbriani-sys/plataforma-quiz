@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paliar Learn - Quiz</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="topo-quiz">
+        <div>
+    <h2>🎓 Paliar Learn</h2>
+    
+    <p id="progresso"></p>
+        </div>
+
+    <button onclick="window.location.href='login.html'">
+        Sair
+    </button>
+
+</div>
+
+    <div id="barra-progresso"></div>
+
+</div>
+
+<p id="progresso"></p>
+    <div class="card-pergunta">
+    
+    <h3 id="pergunta"></h3>
+
+</div>
+
+<div class="card-alternativas">
+
+    <div id="alternativas"></div>
+
+</div>
+
+<script>
+       let perguntaAtual = 0;
+let tentativaId = null;
+let listaPerguntas = [];
+let perguntaIdAtual = null;
+
+        async function iniciarTentativa() {
+
+    const resposta = await fetch(
+        "http://127.0.0.1:8000/iniciar-tentativa",
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                usuario_id: 1
+            })
+        }
+    );
+
+    const dados = await resposta.json();
+
+   if (dados.bloqueado) {
+
+    window.location.href =
+        "limite_tentativas.html";
+
+    return;
+}
+
+    tentativaId = dados.tentativa_id;
+
+    }
+async function carregarListaPerguntas() {
+
+    const resposta = await fetch(
+        "http://127.0.0.1:8000/perguntas-tema-liberado"
+    );
+
+    listaPerguntas =
+        await resposta.json();
+
+    }
+async function responder(alternativaId) {
+
+    
+    const resposta = await fetch(
+        "http://127.0.0.1:8000/responder",
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                usuario_id: 1,
+                pergunta_id: perguntaIdAtual,
+                alternativa_id: alternativaId,
+                tentativa_id:tentativaId
+            })
+        }
+    );
+
+    const dados = await resposta.json();
+    
+    const botaoClicado =
+        document.getElementById(
+            `alternativa-${alternativaId}`
+        );
+
+    const botaoCorreto =
+        document.getElementById(
+            `alternativa-${dados.alternativa_correta}`
+        );
+
+    const todosBotoes =
+        document.querySelectorAll("button");
+
+    todosBotoes.forEach(botao => {
+        botao.disabled = true;
+    });
+
+    if (dados.resultado === "acertou") {
+
+        botaoClicado.style.backgroundColor =
+            "lightgreen";
+
+    } else {
+
+        botaoClicado.style.backgroundColor =
+            "salmon";
+
+        botaoCorreto.style.backgroundColor =
+            "lightgreen";
+    }
+
+    setTimeout(() => {
+
+        perguntaAtual++;
+
+        carregarPergunta();
+
+    }, 2000);
+
+}
+
+async function carregarPergunta() {
+
+    if (
+    perguntaAtual >=
+    listaPerguntas.length
+) {
+
+    window.location.href =
+        "resultado.html";
+
+    return;
+}
+
+perguntaIdAtual =
+    listaPerguntas[
+        perguntaAtual
+    ].id;
+
+const resposta = await fetch(
+    `http://127.0.0.1:8000/quiz/${perguntaIdAtual}`
+);
+
+    const dados = await resposta.json();
+    document.getElementById("progresso").innerText =
+    `Pergunta ${perguntaAtual + 1} de ${listaPerguntas.length}`;
+    let percentual =
+    ((perguntaAtual + 1) /
+listaPerguntas.length) * 100;
+
+document.getElementById(
+    "barra-progresso"
+).style.width =
+    percentual + "%";
+
+    document.getElementById("pergunta").innerText =
+        dados.enunciado;
+
+    const divAlternativas =
+        document.getElementById("alternativas");
+
+    divAlternativas.innerHTML = "";
+
+    const letras = ["A", "B", "C", "D", "E"];
+
+for (let i = 0; i < dados.alternativas.length; i++) {
+
+    const alternativa = dados.alternativas[i];
+
+   divAlternativas.innerHTML += `
+    <button
+        id="alternativa-${alternativa.id}"
+        class="alternativa-btn"
+        onclick="responder(${alternativa.id})"
+    >
+
+        <span class="letra-circulo">
+            ${letras[i]}
+        </span>
+
+        <span class="texto-alternativa">
+            ${alternativa.descricao}
+        </span>
+
+    </button>
+    `;
+
+}
+
+}
+async function iniciarQuiz() {
+
+    await iniciarTentativa();
+
+    await carregarListaPerguntas();
+
+    carregarPergunta();
+
+}
+
+iniciarQuiz();
+</script>
+</body>
+</html>

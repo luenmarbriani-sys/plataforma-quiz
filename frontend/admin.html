@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Área Administrativa</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="card-admin">
+
+        <h1>Área Administrativa</h1>
+
+    <div class="dashboard">
+
+        <div class="card-dashboard">
+            <h3>👥 Usuários</h3>
+            <p id="total-usuarios">0</p>
+        </div>
+
+        <div class="card-dashboard">
+            <h3>✅Concluíram</h3>
+            <p id="usuarios-ativos">0</p>
+        </div>
+
+        <div class="card-dashboard">
+            <h3>📖 Temas</h3>
+            <p id="total-temas">0</p>
+        </div>
+
+        <div class="card-dashboard">
+            <h3>📝 Perguntas</h3>
+            <p id="total-perguntas">0</p>
+        </div>
+
+    </div>
+
+    <div class="secao-admin">
+
+        <div class="cabecalho-secao">
+
+            <h2>Resultados dos Alunos</h2>
+
+<div class="acoes-admin">
+
+    <button onclick="exportarExcel()">
+        📊 Exportar Excel
+    </button>
+
+    <button onclick="voltarMenu()">
+        🏠 Início
+    </button>
+
+</div>
+
+        </div>
+
+        <hr>
+
+        <h3>
+            Importar perguntas via planilha
+        </h3>
+
+        <div class="upload-container">
+
+            <input
+                type="file"
+                id="arquivoExcel"
+                accept=".xlsx"
+            />
+
+            <button onclick="importarPerguntas()">
+                Importar
+            </button>
+
+        </div>
+
+    </div>
+
+    <div id="mensagem"></div>
+
+    <div class="secao-admin">
+
+        <div class="cabecalho-secao">
+
+            <h2>
+                Gerenciamento de Temas
+            </h2>
+
+            
+        </div>
+
+        <div id="listaTemas"></div>
+
+    </div>
+    <div class="secao-admin">
+
+    <div class="cabecalho-secao">
+
+    <h2>
+        📝 Auditoria do Sistema
+    </h2>
+
+    <button onclick="exportarAuditoria()">
+        📥 Exportar Auditoria
+    </button>
+
+</div>
+        </h2>
+
+    </div>
+
+    <table>
+
+        <thead>
+
+            <tr>
+                <th>ID</th>
+                <th>Usuário</th>
+                <th>Ação</th>
+                <th>Data/Hora</th>
+            </tr>
+
+        </thead>
+
+        <tbody id="tabelaAuditoria">
+
+        </tbody>
+
+    </table>
+
+</div>
+
+</div>
+
+<script>
+
+    async function carregarAuditoria() {
+
+    const resposta = await fetch(
+        "http://127.0.0.1:8000/auditoria"
+    );
+
+    const logs = await resposta.json();
+
+    const tabela =
+        document.getElementById(
+            "tabelaAuditoria"
+        );
+
+    tabela.innerHTML = "";
+
+       for (const log of logs) {
+
+    tabela.innerHTML += `
+        <tr>
+            <td>${log.id}</td>
+            <td>${log.usuario}</td>
+            <td>${log.acao}</td>
+            <td>${log.data_hora}</td>
+        </tr>
+    `;
+}
+}
+
+async function carregarTemas() {
+
+    const resposta = await fetch(
+        "http://127.0.0.1:8000/temas"
+    );
+
+    const temas = await resposta.json();
+    
+    const lista =
+        document.getElementById(
+            "listaTemas"
+        );
+
+    lista.innerHTML = "";
+
+    for (const tema of temas) {
+
+        lista.innerHTML += `
+            <div class="tema-card">
+
+                <h3>${tema.nome}</h3>
+
+                ${
+    tema.liberado
+    ?
+    `
+    <span class='tema-liberado'>
+        🟢 Liberado
+    </span>
+    `
+    :
+    `
+<div class="tema-acoes">
+
+    <span>
+        ⚪ Inativo
+    </span>
+
+    <button onclick="liberarTema(${tema.id})">
+        Ativar
+    </button>
+
+</div>
+`
+}
+
+            </div>
+        `;
+    }
+}
+
+async function liberarTema(
+    temaId
+) {
+
+    const resposta = await fetch(
+        `http://127.0.0.1:8000/liberar-tema/${temaId}`,
+        {
+            method: "PUT"
+        }
+    );
+
+    const dados =
+        await resposta.json();
+
+    const mensagem =
+        document.getElementById(
+            "mensagem"
+        );
+
+    mensagem.className =
+        "sucesso";
+
+    mensagem.style.display =
+        "block";
+
+    mensagem.innerText =
+        "✅ " + dados.mensagem;
+
+    carregarTemas();
+    carregarAuditoria();
+}
+
+async function carregarDashboard() {
+
+    const resposta = await fetch(
+        "http://127.0.0.1:8000/dashboard"
+    );
+
+    const dados = await resposta.json();
+
+    document.getElementById(
+        "total-usuarios"
+    ).innerText = dados.usuarios;
+
+    document.getElementById(
+        "usuarios-ativos"
+    ).innerText = dados.ativos;
+
+    document.getElementById(
+        "total-temas"
+    ).innerText = dados.temas;
+
+    document.getElementById(
+        "total-perguntas"
+    ).innerText = dados.perguntas;
+}
+
+async function importarPerguntas() {
+
+    const arquivo = document.getElementById(
+        "arquivoExcel"
+    ).files[0];
+
+    if (!arquivo) {
+
+        const mensagem =
+            document.getElementById(
+                "mensagem"
+            );
+
+        mensagem.className = "erro";
+
+        mensagem.style.display = "block";
+
+        mensagem.innerText =
+            "⚠️ Selecione um arquivo Excel.";
+
+        return;
+    }
+
+    const formData = new FormData();
+
+    formData.append(
+        "arquivo",
+        arquivo
+    );
+
+    const resposta = await fetch(
+        "http://127.0.0.1:8000/importar-perguntas",
+        {
+            method: "POST",
+            body: formData
+        }
+    );
+
+    const dados =
+        await resposta.json();
+
+    const mensagem =
+        document.getElementById(
+            "mensagem"
+        );
+
+    mensagem.className =
+        "sucesso";
+
+    mensagem.style.display =
+        "block";
+
+    mensagem.innerText =
+        "✅ " + dados.mensagem;
+
+    carregarDashboard();
+
+    carregarTemas();
+}
+
+function exportarExcel() {
+
+    window.open(
+        "http://127.0.0.1:8000/exportar-excel",
+        "_blank"
+    );
+
+}
+
+function exportarAuditoria() {
+
+    window.open(
+        "http://127.0.0.1:8000/exportar-auditoria",
+        "_blank"
+    );
+
+}
+
+function voltarMenu() {
+
+    window.location.href = "home.html";
+
+}
+
+carregarDashboard();
+carregarTemas();
+carregarAuditoria();
+
+</script>
+
+</body>
+</html>

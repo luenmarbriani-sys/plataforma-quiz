@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultado</title>
+</head>
+<link rel="stylesheet" href="style.css">
+<body>
+
+   <div class="card-pergunta">
+
+    <h2>Quiz Finalizado</h2>
+
+    <div id="percentual" class="percentual-destaque"></div>
+    <p id="mensagem-resultado"></p>
+    <div class="estatisticas">
+
+    <div class="card-estatistica">
+
+        <div id="acertos" class="numero-estatistica"></div>
+
+        <div>Acertos</div>
+
+    </div>
+
+    <div class="card-estatistica">
+
+        <div id="erros" class="numero-estatistica"></div>
+
+        <div>Erros</div>
+
+    </div>
+
+    <div class="card-estatistica">
+
+        <div id="total" class="numero-estatistica"></div>
+
+        <div>Total</div>
+
+    </div>
+
+</div>
+<br>
+<br>
+
+<button onclick="voltarInicio()">
+    Voltar ao Início
+</button>
+</div>
+</body>
+<script>
+
+async function carregarResultado() {
+
+    const resposta = await fetch(
+        "http://127.0.0.1:8000/resultado/1"
+    );
+
+    const dados = await resposta.json();
+
+    // Não existe resultado disponível
+    if (dados.mensagem) {
+
+        document.getElementById("percentual").innerText =
+            "--";
+
+        document.getElementById("acertos").innerText =
+            "-";
+
+        document.getElementById("erros").innerText =
+            "-";
+
+        document.getElementById("total").innerText =
+            "-";
+
+        document.getElementById("mensagem-resultado").innerText =
+            "Você ainda não concluiu nenhum quiz.";
+
+        return;
+    }
+
+    document.getElementById("acertos").innerText =
+        dados.acertos;
+
+    document.getElementById("erros").innerText =
+        dados.erros;
+
+    document.getElementById("total").innerText =
+        dados.total;
+
+    document.getElementById("percentual").innerText =
+        dados.percentual + "%";
+
+    if (dados.percentual >= 70) {
+
+        document.getElementById(
+            "mensagem-resultado"
+        ).innerText =
+            "🎉 Parabéns! Você teve um excelente desempenho!";
+
+    } else {
+
+        document.getElementById(
+            "mensagem-resultado"
+        ).innerText =
+            "📚 Continue estudando e tente novamente!";
+    }
+}
+function voltarInicio() {
+
+    window.location.href = "home.html";
+
+}
+carregarResultado();
+
+
+</script>
+</html>
