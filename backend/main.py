@@ -440,6 +440,9 @@ def admin_resultados(
             Usuario.id == resultado.usuario_id
         ).first()
 
+        print(dados.email)
+        print (usuario)
+
         lista.append({
             "nome": usuario.nome,
             "acertos": resultado.acertos,
