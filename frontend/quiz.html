@@ -46,7 +46,7 @@ let perguntaIdAtual = null;
         async function iniciarTentativa() {
 
     const resposta = await fetch(
-        "http://127.0.0.1:8000/iniciar-tentativa",
+        "/iniciar-tentativa",
         {
             method: "POST",
             headers: {
@@ -74,7 +74,7 @@ let perguntaIdAtual = null;
 async function carregarListaPerguntas() {
 
     const resposta = await fetch(
-        "http://127.0.0.1:8000/perguntas-tema-liberado"
+        "/perguntas-tema-liberado"
     );
 
     listaPerguntas =
@@ -85,7 +85,7 @@ async function responder(alternativaId) {
 
     
     const resposta = await fetch(
-        "http://127.0.0.1:8000/responder",
+        "/responder",
         {
             method: "POST",
             headers: {
@@ -162,7 +162,7 @@ perguntaIdAtual =
     ].id;
 
 const resposta = await fetch(
-    `http://127.0.0.1:8000/quiz/${perguntaIdAtual}`
+    `/quiz/${perguntaIdAtual}`
 );
 
     const dados = await resposta.json();

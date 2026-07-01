@@ -139,7 +139,7 @@
     async function carregarAuditoria() {
 
     const resposta = await fetch(
-        "http://127.0.0.1:8000/auditoria"
+        "http://plataforma-quiz-production.up.railway.app/auditoria"
     );
 
     const logs = await resposta.json();
@@ -167,7 +167,7 @@
 async function carregarTemas() {
 
     const resposta = await fetch(
-        "http://127.0.0.1:8000/temas"
+        "http://plataforma-quiz-production.up.railway.app/temas"
     );
 
     const temas = await resposta.json();
@@ -220,7 +220,7 @@ async function liberarTema(
 ) {
 
     const resposta = await fetch(
-        `http://127.0.0.1:8000/liberar-tema/${temaId}`,
+        `http://plataforma-quiz-production.up.railway.app/liberar-tema/${temaId}`,
         {
             method: "PUT"
         }
@@ -250,7 +250,7 @@ async function liberarTema(
 async function carregarDashboard() {
 
     const resposta = await fetch(
-        "http://127.0.0.1:8000/dashboard"
+        "http://plataforma-quiz-production.up.railway.app/dashboard"
     );
 
     const dados = await resposta.json();
@@ -303,7 +303,7 @@ async function importarPerguntas() {
     );
 
     const resposta = await fetch(
-        "http://127.0.0.1:8000/importar-perguntas",
+        "http://plataforma-quiz-production.up.railway.app/importar-perguntas",
         {
             method: "POST",
             body: formData
@@ -335,7 +335,7 @@ async function importarPerguntas() {
 function exportarExcel() {
 
     window.open(
-        "http://127.0.0.1:8000/exportar-excel",
+        "/exportar-excel",
         "_blank"
     );
 
@@ -344,7 +344,7 @@ function exportarExcel() {
 function exportarAuditoria() {
 
     window.open(
-        "http://127.0.0.1:8000/exportar-auditoria",
+        "/exportar-auditoria",
         "_blank"
     );
 

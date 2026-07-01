@@ -37,7 +37,7 @@
 async function carregarMelhorResultado() {
 
     const resposta = await fetch(
-        "http://127.0.0.1:8000/resultados/usuario/1"
+        "/resultados/usuario/1"
     );
 
     const dados = await resposta.json();
