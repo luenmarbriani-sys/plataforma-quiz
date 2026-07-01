@@ -402,6 +402,9 @@ def login(
         Usuario.email == dados.email
     ).first()
 
+    print("EMAIL RECEBIDO:",dados.email)
+    print (Usuario:"usuario")
+
     if not usuario:
         return {
             "mensagem": "Email ou senha inválidos"
