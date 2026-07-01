@@ -403,7 +403,7 @@ def login(
     ).first()
 
     print("EMAIL RECEBIDO:",dados.email)
-    print (Usuario:"usuario")
+    print("USUARIO:",usuario)
 
     if not usuario:
         return {
