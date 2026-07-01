@@ -1,3 +1,5 @@
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 from fastapi import (FastAPI, Depends,UploadFile,File)
 from fastapi.responses import JSONResponse
 from fastapi.responses import FileResponse
@@ -35,6 +37,7 @@ LoginRequest
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
+app.mount("/frontend", StaticFiles(directory="frontend"), name="frontend")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -45,7 +48,7 @@ app.add_middleware(
 
 @app.get("/")
 def home():
-    return {"mensagem": "Bem-vindo(a) ao Paliar Learn"}
+    return FileResponse("frontend/login.html")
 
 @app.post("/usuarios")
 def criar_usuario(usuario: UsuarioCreate, db: Session = Depends(get_db)):
