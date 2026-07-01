@@ -139,7 +139,7 @@
     async function carregarAuditoria() {
 
     const resposta = await fetch(
-        "http://plataforma-quiz-production.up.railway.app/auditoria"
+        "/auditoria"
     );
 
     const logs = await resposta.json();
@@ -167,7 +167,7 @@
 async function carregarTemas() {
 
     const resposta = await fetch(
-        "http://plataforma-quiz-production.up.railway.app/temas"
+        "/temas"
     );
 
     const temas = await resposta.json();
@@ -220,7 +220,7 @@ async function liberarTema(
 ) {
 
     const resposta = await fetch(
-        `http://plataforma-quiz-production.up.railway.app/liberar-tema/${temaId}`,
+        `/liberar-tema/${temaId}`,
         {
             method: "PUT"
         }
@@ -250,7 +250,7 @@ async function liberarTema(
 async function carregarDashboard() {
 
     const resposta = await fetch(
-        "http://plataforma-quiz-production.up.railway.app/dashboard"
+        "/dashboard"
     );
 
     const dados = await resposta.json();
@@ -303,7 +303,7 @@ async function importarPerguntas() {
     );
 
     const resposta = await fetch(
-        "http://plataforma-quiz-production.up.railway.app/importar-perguntas",
+        "/importar-perguntas",
         {
             method: "POST",
             body: formData
