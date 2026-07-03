@@ -563,7 +563,7 @@ tr:nth-child(even) {
 
         width: 150px;
         padding: 10px 15px;
-        font-size: 12px;
+        font-size: 16px;
         margin-top: -20px;
     }
 
@@ -846,5 +846,12 @@ tr:nth-child(even) {
     padding: 7px 10px;
     font-size: 12px;
     min-width: 60px;
+
+    .card-home {
+
+    width: 92%;
+}
+
+
 }
 }
