@@ -415,12 +415,6 @@ def login(
             "mensagem": "Email ou senha inválidos"
         }
 
-    db.query(Resposta).filter(
-        Resposta.usuario_id == usuario.id
-    ).delete()
-
-    db.commit()
-
     return {
         "mensagem": "Login realizado com sucesso",
         "usuario_id": usuario.id,
