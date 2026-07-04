@@ -564,7 +564,8 @@ tr:nth-child(even) {
         width: 150px;
         padding: 10px 15px;
         font-size: 16px;
-        margin-top: -20px;
+        margin-top: -8px;
+        margin-top: -8px;
     }
 
     .card-limite h1 {
