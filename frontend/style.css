@@ -565,7 +565,7 @@ tr:nth-child(even) {
         padding: 10px 15px;
         font-size: 16px;
         margin-top: -8px;
-        margin-top: -8px;
+        
     }
 
     .card-limite h1 {
@@ -800,12 +800,14 @@ tr:nth-child(even) {
 
     .dashboard {
 
-        gap: 8px;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
     }
 
     .card-dashboard {
 
-        width: 65px;
+        width: auto;
     }
 
     .card-dashboard h3 {
@@ -819,40 +821,38 @@ tr:nth-child(even) {
         font-size: 15px;
         margin: 0;
     }
-.card-admin h1 {
 
-    font-size: 22px;
-}
+    .card-admin h1 {
 
-.secao-admin h2 {
+        font-size: 22px;
+    }
 
-    font-size: 18px;
-}
+    .secao-admin h2 {
 
-.secao-admin h3 {
+        font-size: 18px;
+    }
 
-    font-size: 16px;
-}
+    .secao-admin h3 {
 
-/* NOVO */
+        font-size: 16px;
+    }
 
-.upload-container button {
+    .upload-container button {
 
-    padding: 8px 12px;
-    font-size: 12px;
-}
+        padding: 8px 12px;
+        font-size: 12px;
+    }
 
-.tema-acoes button {
+    .tema-acoes button {
 
-    padding: 7px 10px;
-    font-size: 12px;
-    min-width: 60px;
+        padding: 7px 10px;
+        font-size: 12px;
+        min-width: 60px;
+    }
 
     .card-home {
 
-    width: 92%;
-}
+        width: 92%;
+    }
 
-
-}
 }
