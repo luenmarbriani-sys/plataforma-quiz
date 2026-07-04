@@ -66,21 +66,10 @@
 
 if (dados.mensagem === "Login realizado com sucesso") {
 
-    localStorage.setItem(
-        "usuario_id",
-        dados.usuario_id
-    );
+    localStorage.setItem("usuario_id",dados.usuario_id);
+    localStorage.setItem("nome",dados.nome);
+    localStorage.setItem("admin",dados.admin);
 
-    localStorage.setItem(
-        "nome",
-        dados.nome
-    );
-
-    localStorage.setItem(
-        "admin",
-        dados.admin
-    );
-    alert ("Login Ok");
     window.location.href = "/frontend/home.html";
 
 } else {
