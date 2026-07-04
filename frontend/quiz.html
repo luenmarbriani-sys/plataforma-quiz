@@ -53,7 +53,7 @@ let perguntaIdAtual = null;
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                usuario_id: 1
+                usuario_id: localStorage.getItem("usuario_id")
             })
         }
     );
@@ -83,7 +83,7 @@ async function carregarListaPerguntas() {
     }
 async function responder(alternativaId) {
 
-    
+    const usuarioId = localStorage.getItem("usuario_id");
     const resposta = await fetch(
         "/responder",
         {
@@ -92,7 +92,7 @@ async function responder(alternativaId) {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                usuario_id: 1,
+                usuario_id: usuarioId,
                 pergunta_id: perguntaIdAtual,
                 alternativa_id: alternativaId,
                 tentativa_id:tentativaId

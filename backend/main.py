@@ -212,6 +212,12 @@ def iniciar_tentativa(
 
     if tentativa_aberta:
 
+        # apaga respostas antigas dessa tentativa antes de reiniciar
+        db.query(Resposta).filter(
+            Resposta.tentativa_id == tentativa_aberta.id
+        ).delete()
+        db.commit()
+
         return {
             "bloqueado": False,
             "tentativa_id": tentativa_aberta.id
@@ -287,6 +293,20 @@ def resultado(usuario_id: int, db: Session = Depends(get_db)):
 
     total = len(respostas)
 
+    # NOVO: descobre quantas perguntas tem o tema liberado
+    tema = db.query(Tema).filter(Tema.liberado == True).first()
+
+    total_perguntas_tema = 0
+    if tema:
+        total_perguntas_tema = db.query(Pergunta).filter(
+            Pergunta.tema_id == tema.id
+        ).count()
+
+    # NOVO: só considera "quiz terminado de verdade" se respondeu tudo
+    quiz_foi_finalizado = (
+        total_perguntas_tema > 0 and total == total_perguntas_tema
+    )
+
     acertos = 0
 
     for resposta in respostas:
@@ -309,7 +329,8 @@ def resultado(usuario_id: int, db: Session = Depends(get_db)):
         Resultado.tentativa_id == ultima_tentativa.id
     ).first()
 
-    if not resultado_existente:
+    # ALTERADO: só cria resultado e marca concluída se realmente terminou
+    if not resultado_existente and quiz_foi_finalizado:
 
         novo_resultado = Resultado(
             usuario_id=usuario_id,
