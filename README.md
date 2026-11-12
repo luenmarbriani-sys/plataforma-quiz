@@ -2,6 +2,8 @@
 
 Sistema Web desenvolvido para aplicação de avaliações ou como testes de conhecimento, permitindo que usuários realizem quizzes, acompanhem seus resultados e os administradores gerenciem perguntas, temas e desempenho dos participantes.
 
+A versão online (Railway) está desativada desde o fim do plano gratuito. Os prints das telas estão no final deste README, e o projeto pode ser executado localmente seguindo as instruções de “Como executar o projeto”.
+
 ## Objetivo
 
 Esse é um projeto pessoal que desenvolvi durante a minha graduação em Banco de Dados, como forma de ir além da sala de aula e entender como um sistema completo funciona na prática, do banco até a tela do usuário final.
